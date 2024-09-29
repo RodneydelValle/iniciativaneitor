@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Iniciativas de Rol</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: auto;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            text-align: center;
+        }
+
+        table {
+            width: 100%;
+            margin-top: 20px;
+        }
+
+        input {
+            width: calc(50% - 10px);
+            padding: 10px;
+            margin: 5px;
+        }
+
+        button {
+            padding: 10px 20px;
+            margin: 10px 0;
+            display: block;
+            width: 100%;
+        }
+
+        th, td {
+            padding: 10px;
+            text-align: center;
+            border: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #f0f0f0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Registro de Iniciativas</h1>
+        <table>
+            <thead>
+                <tr>
+                    <th>Nombre del PJ</th>
+                    <th>Número de Iniciativa</th>
+                </tr>
+            </thead>
+            <tbody id="tabla-iniciativas">
+                <!-- Se llenarán las filas aquí -->
+                <tr>
+                    <td><input type="text" class="nombre" placeholder="Nombre del PJ"></td>
+                    <td><input type="number" class="numero" placeholder="Iniciativa"></td>
+                </tr>
+                <tr>
+                    <td><input type="text" class="nombre" placeholder="Nombre del PJ"></td>
+                    <td><input type="number" class="numero" placeholder="Iniciativa"></td>
+                </tr>
+                <tr>
+                    <td><input type="text" class="nombre" placeholder="Nombre del PJ"></td>
+                    <td><input type="number" class="numero" placeholder="Iniciativa"></td>
+                </tr>
+                <tr>
+                    <td><input type="text" class="nombre" placeholder="Nombre del PJ"></td>
+                    <td><input type="number" class="numero" placeholder="Iniciativa"></td>
+                </tr>
+                <tr>
+                    <td><input type="text" class="nombre" placeholder="Nombre del PJ"></td>
+                    <td><input type="number" class="numero" placeholder="Iniciativa"></td>
+                </tr>
+                <tr>
+                    <td><input type="text" class="nombre" placeholder="Nombre del PJ"></td>
+                    <td><input type="number" class="numero" placeholder="Iniciativa"></td>
+                </tr>
+                <tr>
+                    <td><input type="text" class="nombre" placeholder="Nombre del PJ"></td>
+                    <td><input type="number" class="numero" placeholder="Iniciativa"></td>
+                </tr>
+                <tr>
+                    <td><input type="text" class="nombre" placeholder="Nombre del PJ"></td>
+                    <td><input type="number" class="numero" placeholder="Iniciativa"></td>
+                </tr>
+            </tbody>
+        </table>
+        <button id="ordenar">Ordenar Iniciativas</button>
+    </div>
+    <script>
+        document.getElementById('ordenar').addEventListener('click', function() {
+            const filas = Array.from(document.querySelectorAll('#tabla-iniciativas tr'));
+            const iniciativas = [];
+
+            filas.forEach(fila => {
+                const nombre = fila.querySelector('.nombre').value;
+                const numero = parseInt(fila.querySelector('.numero').value);
+                if (nombre && !isNaN(numero)) {
+                    iniciativas.push({ nombre, numero });
+                }
+            });
+
+            iniciativas.sort((a, b) => b.numero - a.numero);
+
+            // Limpiar la tabla y volver a agregar las filas ordenadas
+            const cuerpoTabla = document.getElementById('tabla-iniciativas');
+            cuerpoTabla.innerHTML = '';
+
+            iniciativas.forEach(iniciativa => {
+                const nuevaFila = document.createElement('tr');
+                nuevaFila.innerHTML = `
+                    <td>${iniciativa.nombre}</td>
+                    <td>${iniciativa.numero}</td>
+                `;
+                cuerpoTabla.appendChild(nuevaFila);
+            });
+        });
+    </script>
+</body>
+</html>
