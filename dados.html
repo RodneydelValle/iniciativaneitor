@@ -64,7 +64,6 @@
             margin-bottom: 10px;
         }
 
-        /* Alinea los botones uno al lado del otro */
         .btn-container {
             display: flex;
             justify-content: space-between;
@@ -80,7 +79,7 @@
 <body>
     <!-- Navbar -->
     <div class="navbar">
-        <a href="index.html">Iniciativas</a> <!-- Enlace a index.html -->
+        <a href="index.html">Iniciativas</a>
     </div>
 
     <div class="container">
@@ -88,19 +87,7 @@
 
         <!-- Contenedor para los dados -->
         <div id="dados-container">
-            <div class="dado-item">
-                <!-- Selector para elegir tipo de dado -->
-                <select class="tipo-dado">
-                    <option value="4">d4</option>
-                    <option value="6">d6</option>
-                    <option value="8">d8</option>
-                    <option value="12">d12</option>
-                    <option value="20">d20</option>
-                </select>
-
-                <!-- Selector para elegir número de dados -->
-                <input type="number" class="numero-dados" min="1" value="1">
-            </div>
+            <!-- Inicialmente cargamos los dados desde Local Storage -->
         </div>
 
         <!-- Botones alineados -->
@@ -117,26 +104,37 @@
     </div>
 
     <script>
+        // Cargar datos desde Local Storage al cargar la página
+        window.onload = function() {
+            const dadosGuardados = JSON.parse(localStorage.getItem('dados')) || [];
+            dadosGuardados.forEach(dado => agregarDado(dado.tipo, dado.numero));
+        };
+
         // Función para lanzar un dado
         function lanzarDado(lados) {
             return Math.floor(Math.random() * lados) + 1;
         }
 
         // Función para agregar una nueva fila de dado
-        document.getElementById('agregar-dado').addEventListener('click', function() {
+        function agregarDado(tipo = 4, numero = 1) {
             const nuevoDadoDiv = document.createElement('div');
             nuevoDadoDiv.classList.add('dado-item');
             nuevoDadoDiv.innerHTML = `
                 <select class="tipo-dado">
-                    <option value="4">d4</option>
-                    <option value="6">d6</option>
-                    <option value="8">d8</option>
-                    <option value="12">d12</option>
-                    <option value="20">d20</option>
+                    <option value="4" ${tipo === 4 ? 'selected' : ''}>d4</option>
+                    <option value="6" ${tipo === 6 ? 'selected' : ''}>d6</option>
+                    <option value="8" ${tipo === 8 ? 'selected' : ''}>d8</option>
+                    <option value="12" ${tipo === 12 ? 'selected' : ''}>d12</option>
+                    <option value="20" ${tipo === 20 ? 'selected' : ''}>d20</option>
                 </select>
-                <input type="number" class="numero-dados" min="1" value="1">
+                <input type="number" class="numero-dados" min="1" value="${numero}">
             `;
             document.getElementById('dados-container').appendChild(nuevoDadoDiv);
+            guardarDados(); // Guarda los dados después de agregarlos
+        }
+
+        document.getElementById('agregar-dado').addEventListener('click', function() {
+            agregarDado(); // Agrega un dado con valores por defecto
         });
 
         // Función para manejar el evento de lanzar todos los dados
@@ -164,24 +162,28 @@
 
         // Función para reiniciar el formulario y los resultados
         document.getElementById('reiniciar-dados').addEventListener('click', function() {
-            // Limpiar el contenedor de dados, manteniendo solo el primer dado
+            // Limpiar el contenedor de dados
             const dadosContainer = document.getElementById('dados-container');
-            dadosContainer.innerHTML = `
-                <div class="dado-item">
-                    <select class="tipo-dado">
-                        <option value="4">d4</option>
-                        <option value="6">d6</option>
-                        <option value="8">d8</option>
-                        <option value="12">d12</option>
-                        <option value="20">d20</option>
-                    </select>
-                    <input type="number" class="numero-dados" min="1" value="1">
-                </div>
-            `;
+            dadosContainer.innerHTML = '';
 
             // Limpiar los resultados
             document.getElementById('resultados').innerHTML = '';
+
+            // Reiniciar Local Storage
+            localStorage.removeItem('dados');
         });
+
+        // Guardar dados en Local Storage
+        function guardarDados() {
+            const dadosItems = document.querySelectorAll('.dado-item');
+            const dados = [];
+            dadosItems.forEach(item => {
+                const tipoDado = parseInt(item.querySelector('.tipo-dado').value);
+                const numeroDados = parseInt(item.querySelector('.numero-dados').value);
+                dados.push({ tipo: tipoDado, numero: numeroDados });
+            });
+            localStorage.setItem('dados', JSON.stringify(dados));
+        }
     </script>
 </body>
 </html>
