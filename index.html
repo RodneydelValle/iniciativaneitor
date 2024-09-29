@@ -70,39 +70,34 @@
                     <td><input type="text" class="nombre" placeholder="Nombre del PJ"></td>
                     <td><input type="number" class="numero" placeholder="Iniciativa"></td>
                 </tr>
-                <tr>
-                    <td><input type="text" class="nombre" placeholder="Nombre del PJ"></td>
-                    <td><input type="number" class="numero" placeholder="Iniciativa"></td>
-                </tr>
-                <tr>
-                    <td><input type="text" class="nombre" placeholder="Nombre del PJ"></td>
-                    <td><input type="number" class="numero" placeholder="Iniciativa"></td>
-                </tr>
-                <tr>
-                    <td><input type="text" class="nombre" placeholder="Nombre del PJ"></td>
-                    <td><input type="number" class="numero" placeholder="Iniciativa"></td>
-                </tr>
-                <tr>
-                    <td><input type="text" class="nombre" placeholder="Nombre del PJ"></td>
-                    <td><input type="number" class="numero" placeholder="Iniciativa"></td>
-                </tr>
-                <tr>
-                    <td><input type="text" class="nombre" placeholder="Nombre del PJ"></td>
-                    <td><input type="number" class="numero" placeholder="Iniciativa"></td>
-                </tr>
-                <tr>
-                    <td><input type="text" class="nombre" placeholder="Nombre del PJ"></td>
-                    <td><input type="number" class="numero" placeholder="Iniciativa"></td>
-                </tr>
-                <tr>
-                    <td><input type="text" class="nombre" placeholder="Nombre del PJ"></td>
-                    <td><input type="number" class="numero" placeholder="Iniciativa"></td>
-                </tr>
             </tbody>
         </table>
+        <button id="agregar-fila">Agregar Fila</button>
+        <button id="quitar-fila">Quitar Fila</button>
         <button id="ordenar">Ordenar Iniciativas</button>
     </div>
     <script>
+        // Función para agregar una nueva fila
+        document.getElementById('agregar-fila').addEventListener('click', function() {
+            const cuerpoTabla = document.getElementById('tabla-iniciativas');
+            const nuevaFila = document.createElement('tr');
+            nuevaFila.innerHTML = `
+                <td><input type="text" class="nombre" placeholder="Nombre del PJ"></td>
+                <td><input type="number" class="numero" placeholder="Iniciativa"></td>
+            `;
+            cuerpoTabla.appendChild(nuevaFila);
+        });
+
+        // Función para quitar la última fila
+        document.getElementById('quitar-fila').addEventListener('click', function() {
+            const cuerpoTabla = document.getElementById('tabla-iniciativas');
+            const filas = cuerpoTabla.getElementsByTagName('tr');
+            if (filas.length > 0) {
+                cuerpoTabla.removeChild(filas[filas.length - 1]);
+            }
+        });
+
+        // Función para ordenar las iniciativas
         document.getElementById('ordenar').addEventListener('click', function() {
             const filas = Array.from(document.querySelectorAll('#tabla-iniciativas tr'));
             const iniciativas = [];
