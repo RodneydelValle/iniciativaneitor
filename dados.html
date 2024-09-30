@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lanzador de Dados</title>
+    <title>Lanzador de Dados 2</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -122,6 +122,34 @@
             return Math.floor(Math.random() * lados) + 1;
         }
 
+        // Función para guardar resultados en el LocalStorage
+        function guardarResultadosEnCache(resultados) {
+            localStorage.setItem('resultados', JSON.stringify(resultados));
+        }
+
+        // Función para cargar los resultados desde el LocalStorage
+        function cargarResultadosDesdeCache() {
+            const resultadosGuardados = localStorage.getItem('resultados');
+            if (resultadosGuardados) {
+                return JSON.parse(resultadosGuardados);
+            }
+            return [];
+        }
+
+        // Mostrar los resultados guardados en el LocalStorage al cargar la página
+        function mostrarResultadosGuardados() {
+            const resultadosDiv = document.getElementById('resultados');
+            const resultados = cargarResultadosDesdeCache();
+
+            resultadosDiv.innerHTML = '';
+            resultados.forEach(resultado => {
+                const resultadoItem = document.createElement('div');
+                resultadoItem.classList.add('resultado-item');
+                resultadoItem.textContent = `Dado d${resultado.tipoDado}: ${resultado.resultado}`;
+                resultadosDiv.appendChild(resultadoItem);
+            });
+        }
+
         // Función para agregar una nueva fila de dado
         document.getElementById('agregar-dado').addEventListener('click', function() {
             const nuevoDadoDiv = document.createElement('div');
@@ -149,6 +177,7 @@
         document.getElementById('lanzar-dados').addEventListener('click', function() {
             const dadosItems = document.querySelectorAll('.dado-item');
             const resultadosDiv = document.getElementById('resultados');
+            const resultados = [];
 
             // Limpiar resultados anteriores
             resultadosDiv.innerHTML = '';
@@ -164,8 +193,14 @@
                     resultadoItem.classList.add('resultado-item');
                     resultadoItem.textContent = `Dado d${tipoDado}: ${resultado}`;
                     resultadosDiv.appendChild(resultadoItem);
+
+                    // Guardar resultado en array
+                    resultados.push({ tipoDado, resultado });
                 }
             });
+
+            // Guardar resultados en LocalStorage
+            guardarResultadosEnCache(resultados);
         });
 
         // Función para reiniciar el formulario y los resultados
@@ -185,11 +220,12 @@
                 </div>
             `;
 
-            // Limpiar los resultados
+            // Limpiar los resultados en la interfaz y LocalStorage
             document.getElementById('resultados').innerHTML = '';
+            localStorage.removeItem('resultados');
         });
 
-        // Función para reiniciar todo
+        // Función para reiniciar todo (dados y resultados)
         document.getElementById('reiniciar-todo').addEventListener('click', function() {
             // Limpiar el contenedor de dados
             document.getElementById('dados-container').innerHTML = `
@@ -205,9 +241,13 @@
                 </div>
             `;
 
-            // Limpiar los resultados
+            // Limpiar los resultados en la interfaz y LocalStorage
             document.getElementById('resultados').innerHTML = '';
+            localStorage.removeItem('resultados');
         });
+
+        // Mostrar los resultados guardados al cargar la página
+        mostrarResultadosGuardados();
     </script>
 </body>
 </html>
