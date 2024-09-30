@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lanzador de Dados</title>
+    <title>Iniciativas de Rol</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -44,210 +44,113 @@
             text-align: center;
         }
 
-        .dado-item {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 10px;
-        }
-
-        select, input, button {
-            padding: 10px;
-            margin: 5px;
-            width: calc(50% - 12px);
-        }
-
-        .resultados {
+        table {
+            width: 100%;
             margin-top: 20px;
         }
 
-        .resultado-item {
-            margin-bottom: 10px;
-        }
-
-        .btn-container {
-            display: flex;
-            justify-content: space-between;
-            margin-top: 10px;
+        input {
+            width: calc(50% - 10px);
+            padding: 10px;
+            margin: 5px;
         }
 
         button {
-            flex: 1;
-            margin: 5px;
+            padding: 10px 20px;
+            margin: 10px 0;
+            display: block;
+            width: 100%;
+        }
+
+        th, td {
+            padding: 10px;
+            text-align: center;
+            border: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #f0f0f0;
         }
     </style>
 </head>
 <body>
     <!-- Navbar -->
     <div class="navbar">
-        <a href="index.html">Iniciativas</a> <!-- Enlace a index.html -->
+        <a href="index.html">Inicio</a>
+        <a href="dados.html">Dados</a> <!-- Botón para redirigir a dados.html -->
     </div>
 
     <div class="container">
-        <h1>Lanzador de Dados</h1>
-
-        <!-- Contenedor para los dados -->
-        <div id="dados-container">
-            <div class="dado-item">
-                <!-- Selector para elegir tipo de dado -->
-                <select class="tipo-dado">
-                    <option value="4">d4</option>
-                    <option value="6">d6</option>
-                    <option value="8">d8</option>
-                    <option value="12">d12</option>
-                    <option value="20">d20</option>
-                </select>
-
-                <!-- Selector para elegir número de dados -->
-                <input type="number" class="numero-dados" min="1" value="1">
-            </div>
-        </div>
-
-        <!-- Botones alineados -->
-        <div class="btn-container">
-            <button id="agregar-dado">Agregar Dado</button>
-            <button id="lanzar-dados">Lanzar Dados</button>
-            <button id="reiniciar-dados">Reiniciar</button>
-            <button id="reiniciar-todo">Reiniciar Todo</button>
-        </div>
-
-        <!-- Sección para mostrar los resultados -->
-        <div class="resultados" id="resultados">
-            <!-- Aquí se mostrarán los resultados -->
-        </div>
+        <h1>Registro de Iniciativas</h1>
+        <table>
+            <thead>
+                <tr>
+                    <th>Nombre del PJ</th>
+                    <th>Número de Iniciativa</th>
+                </tr>
+            </thead>
+            <tbody id="tabla-iniciativas">
+                <!-- Se llenarán las filas aquí -->
+                <tr>
+                    <td><input type="text" class="nombre" placeholder="Nombre del PJ"></td>
+                    <td><input type="number" class="numero" placeholder="Iniciativa"></td>
+                </tr>
+            </tbody>
+        </table>
+        <button id="agregar-fila">Agregar Fila</button>
+        <button id="quitar-fila">Quitar Fila</button>
+        <button id="ordenar">Ordenar Iniciativas</button>
     </div>
-
+    
     <script>
-        // Función para lanzar un dado
-        function lanzarDado(lados) {
-            return Math.floor(Math.random() * lados) + 1;
-        }
-
-        // Función para guardar resultados en el LocalStorage
-        function guardarResultadosEnCache(resultados) {
-            localStorage.setItem('resultados', JSON.stringify(resultados));
-        }
-
-        // Función para cargar los resultados desde el LocalStorage
-        function cargarResultadosDesdeCache() {
-            const resultadosGuardados = localStorage.getItem('resultados');
-            if (resultadosGuardados) {
-                return JSON.parse(resultadosGuardados);
-            }
-            return [];
-        }
-
-        // Mostrar los resultados guardados en el LocalStorage al cargar la página
-        function mostrarResultadosGuardados() {
-            const resultadosDiv = document.getElementById('resultados');
-            const resultados = cargarResultadosDesdeCache();
-
-            resultadosDiv.innerHTML = '';
-            resultados.forEach(resultado => {
-                const resultadoItem = document.createElement('div');
-                resultadoItem.classList.add('resultado-item');
-                resultadoItem.textContent = `Dado d${resultado.tipoDado}: ${resultado.resultado}`;
-                resultadosDiv.appendChild(resultadoItem);
-            });
-        }
-
-        // Función para agregar una nueva fila de dado
-        document.getElementById('agregar-dado').addEventListener('click', function() {
-            const nuevoDadoDiv = document.createElement('div');
-            nuevoDadoDiv.classList.add('dado-item');
-            nuevoDadoDiv.innerHTML = `
-                <select class="tipo-dado">
-                    <option value="4">d4</option>
-                    <option value="6">d6</option>
-                    <option value="8">d8</option>
-                    <option value="12">d12</option>
-                    <option value="20">d20</option>
-                </select>
-                <input type="number" class="numero-dados" min="1" value="1">
-                <button class="eliminar-dado">Eliminar</button>
+        // Función para agregar una nueva fila
+        document.getElementById('agregar-fila').addEventListener('click', function() {
+            const cuerpoTabla = document.getElementById('tabla-iniciativas');
+            const nuevaFila = document.createElement('tr');
+            nuevaFila.innerHTML = `
+                <td><input type="text" class="nombre" placeholder="Nombre del PJ"></td>
+                <td><input type="number" class="numero" placeholder="Iniciativa"></td>
             `;
-            document.getElementById('dados-container').appendChild(nuevoDadoDiv);
-
-            // Evento para eliminar la fila correspondiente
-            nuevoDadoDiv.querySelector('.eliminar-dado').addEventListener('click', function() {
-                nuevoDadoDiv.remove();
-            });
+            cuerpoTabla.appendChild(nuevaFila);
         });
 
-        // Función para manejar el evento de lanzar todos los dados
-        document.getElementById('lanzar-dados').addEventListener('click', function() {
-            const dadosItems = document.querySelectorAll('.dado-item');
-            const resultadosDiv = document.getElementById('resultados');
-            const resultados = [];
+        // Función para quitar la última fila
+        document.getElementById('quitar-fila').addEventListener('click', function() {
+            const cuerpoTabla = document.getElementById('tabla-iniciativas');
+            const filas = cuerpoTabla.getElementsByTagName('tr');
+            if (filas.length > 0) {
+                cuerpoTabla.removeChild(filas[filas.length - 1]);
+            }
+        });
 
-            // Limpiar resultados anteriores
-            resultadosDiv.innerHTML = '';
+        // Función para ordenar las iniciativas sin eliminar los campos input
+        document.getElementById('ordenar').addEventListener('click', function() {
+            const filas = Array.from(document.querySelectorAll('#tabla-iniciativas tr'));
+            const iniciativas = [];
 
-            // Recorrer cada dado seleccionado y lanzar
-            dadosItems.forEach(item => {
-                const tipoDado = parseInt(item.querySelector('.tipo-dado').value);
-                const numeroDados = parseInt(item.querySelector('.numero-dados').value);
-
-                for (let i = 0; i < numeroDados; i++) {
-                    const resultado = lanzarDado(tipoDado);
-                    const resultadoItem = document.createElement('div');
-                    resultadoItem.classList.add('resultado-item');
-                    resultadoItem.textContent = `Dado d${tipoDado}: ${resultado}`;
-                    resultadosDiv.appendChild(resultadoItem);
-
-                    // Guardar resultado en array
-                    resultados.push({ tipoDado, resultado });
+            filas.forEach(fila => {
+                const nombre = fila.querySelector('.nombre').value;
+                const numero = parseInt(fila.querySelector('.numero').value);
+                if (nombre && !isNaN(numero)) {
+                    iniciativas.push({ nombre, numero });
                 }
             });
 
-            // Guardar resultados en LocalStorage
-            guardarResultadosEnCache(resultados);
+            iniciativas.sort((a, b) => b.numero - a.numero);
+
+            // Limpiar la tabla y volver a agregar las filas con inputs ordenadas
+            const cuerpoTabla = document.getElementById('tabla-iniciativas');
+            cuerpoTabla.innerHTML = '';
+
+            iniciativas.forEach(iniciativa => {
+                const nuevaFila = document.createElement('tr');
+                nuevaFila.innerHTML = `
+                    <td><input type="text" class="nombre" value="${iniciativa.nombre}"></td>
+                    <td><input type="number" class="numero" value="${iniciativa.numero}"></td>
+                `;
+                cuerpoTabla.appendChild(nuevaFila);
+            });
         });
-
-        // Función para reiniciar el formulario y los resultados
-        document.getElementById('reiniciar-dados').addEventListener('click', function() {
-            // Limpiar el contenedor de dados, manteniendo solo el primer dado
-            const dadosContainer = document.getElementById('dados-container');
-            dadosContainer.innerHTML = `
-                <div class="dado-item">
-                    <select class="tipo-dado">
-                        <option value="4">d4</option>
-                        <option value="6">d6</option>
-                        <option value="8">d8</option>
-                        <option value="12">d12</option>
-                        <option value="20">d20</option>
-                    </select>
-                    <input type="number" class="numero-dados" min="1" value="1">
-                </div>
-            `;
-
-            // Limpiar los resultados en la interfaz y LocalStorage
-            document.getElementById('resultados').innerHTML = '';
-            localStorage.removeItem('resultados');
-        });
-
-        // Función para reiniciar todo (dados y resultados)
-        document.getElementById('reiniciar-todo').addEventListener('click', function() {
-            // Limpiar el contenedor de dados
-            document.getElementById('dados-container').innerHTML = `
-                <div class="dado-item">
-                    <select class="tipo-dado">
-                        <option value="4">d4</option>
-                        <option value="6">d6</option>
-                        <option value="8">d8</option>
-                        <option value="12">d12</option>
-                        <option value="20">d20</option>
-                    </select>
-                    <input type="number" class="numero-dados" min="1" value="1">
-                </div>
-            `;
-
-            // Limpiar los resultados en la interfaz y LocalStorage
-            document.getElementById('resultados').innerHTML = '';
-            localStorage.removeItem('resultados');
-        });
-
-        // Mostrar los resultados guardados al cargar la página
-        mostrarResultadosGuardados();
     </script>
 </body>
 </html>
