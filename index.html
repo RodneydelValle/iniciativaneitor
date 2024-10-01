@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Iniciativas de Rol 5</title>
+    <title>Iniciativas de Rol 6</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -58,8 +58,12 @@
         button {
             padding: 10px 20px;
             margin: 10px 0;
-            display: block;
-            width: 100%;
+            width: calc(50% - 10px);
+            float: left;
+        }
+
+        .button-row {
+            overflow: hidden;
         }
 
         th, td {
@@ -70,6 +74,25 @@
 
         th {
             background-color: #f0f0f0;
+        }
+
+        .resultado-casilla {
+            margin-top: 20px;
+        }
+
+        .casilla {
+            width: calc(50% - 10px);
+            margin: 5px;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            text-align: center;
+            display: inline-block;
+        }
+
+        .resultado-item {
+            display: flex;
+            justify-content: space-between;
         }
     </style>
 </head>
@@ -97,15 +120,21 @@
                 </tr>
             </tbody>
         </table>
-        <button id="agregar-fila">Agregar Fila</button>
-        <button id="quitar-fila">Quitar Fila</button>
-        <button id="ordenar">Ordenar Iniciativas</button>
-        <button id="borrar-lista">Borrar Lista Guardada</button>
+
+        <!-- Botones en dos filas -->
+        <div class="button-row">
+            <button id="agregar-fila">Agregar Fila</button>
+            <button id="quitar-fila">Quitar Fila</button>
+        </div>
+        <div class="button-row">
+            <button id="ordenar">Ordenar Iniciativas</button>
+            <button id="borrar-lista">Borrar Lista Guardada</button>
+        </div>
 
         <h2>Iniciativas Ordenadas</h2>
-        <ul id="lista-iniciativas-ordenadas">
-            <!-- Lista de iniciativas ordenadas -->
-        </ul>
+        <div id="lista-iniciativas-ordenadas" class="resultado-casilla">
+            <!-- Casillas para las iniciativas ordenadas -->
+        </div>
     </div>
     
     <script>
@@ -129,33 +158,55 @@
             }
         });
 
-        // Función para ordenar las iniciativas y guardar en LocalStorage
+        // Función para ordenar las iniciativas y guardar en LocalStorage sin borrar datos anteriores
         document.getElementById('ordenar').addEventListener('click', function() {
             const filas = Array.from(document.querySelectorAll('#tabla-iniciativas tr'));
-            const iniciativas = [];
+            let iniciativas = [];
 
+            // Recuperar las iniciativas ya guardadas en el LocalStorage, si existen
+            let iniciativasGuardadas = JSON.parse(localStorage.getItem('listaIniciativasOrdenadas')) || [];
+
+            // Obtener las nuevas iniciativas ingresadas
             filas.forEach(fila => {
                 const nombre = fila.querySelector('.nombre').value;
                 const numero = parseInt(fila.querySelector('.numero').value);
                 if (nombre && !isNaN(numero)) {
-                    iniciativas.push({ nombre, numero });
+                    // Verificar que la iniciativa no esté duplicada
+                    if (!iniciativasGuardadas.some(iniciativa => iniciativa.nombre === nombre && iniciativa.numero === numero)) {
+                        iniciativasGuardadas.push({ nombre, numero });
+                    }
                 }
             });
 
-            iniciativas.sort((a, b) => b.numero - a.numero);
+            // Ordenar todas las iniciativas (las nuevas y las guardadas)
+            iniciativasGuardadas.sort((a, b) => b.numero - a.numero);
 
-            // Crear lista de iniciativas ordenadas y mostrarla en la lista aparte
+            // Crear casillas de iniciativas ordenadas y mostrarlas
             const listaIniciativas = document.getElementById('lista-iniciativas-ordenadas');
             listaIniciativas.innerHTML = ''; // Limpiar la lista
 
-            iniciativas.forEach(iniciativa => {
-                const li = document.createElement('li');
-                li.textContent = `${iniciativa.nombre}: ${iniciativa.numero}`;
-                listaIniciativas.appendChild(li);
+            iniciativasGuardadas.forEach(iniciativa => {
+                const resultadoItem = document.createElement('div');
+                resultadoItem.className = 'resultado-item';
+                
+                const inputNombre = document.createElement('input');
+                inputNombre.className = 'casilla';
+                inputNombre.type = 'text';
+                inputNombre.value = iniciativa.nombre;
+
+                const inputNumero = document.createElement('input');
+                inputNumero.className = 'casilla';
+                inputNumero.type = 'number';
+                inputNumero.value = iniciativa.numero;
+
+                resultadoItem.appendChild(inputNombre);
+                resultadoItem.appendChild(inputNumero);
+
+                listaIniciativas.appendChild(resultadoItem);
             });
 
-            // Guardar la lista ordenada en LocalStorage
-            localStorage.setItem('listaIniciativasOrdenadas', JSON.stringify(iniciativas));
+            // Guardar la lista completa (con las nuevas iniciativas) en el LocalStorage
+            localStorage.setItem('listaIniciativasOrdenadas', JSON.stringify(iniciativasGuardadas));
             alert('Iniciativas ordenadas y guardadas.');
         });
 
@@ -167,9 +218,23 @@
                 listaIniciativas.innerHTML = ''; // Limpiar la lista
 
                 iniciativasGuardadas.forEach(iniciativa => {
-                    const li = document.createElement('li');
-                    li.textContent = `${iniciativa.nombre}: ${iniciativa.numero}`;
-                    listaIniciativas.appendChild(li);
+                    const resultadoItem = document.createElement('div');
+                    resultadoItem.className = 'resultado-item';
+                    
+                    const inputNombre = document.createElement('input');
+                    inputNombre.className = 'casilla';
+                    inputNombre.type = 'text';
+                    inputNombre.value = iniciativa.nombre;
+
+                    const inputNumero = document.createElement('input');
+                    inputNumero.className = 'casilla';
+                    inputNumero.type = 'number';
+                    inputNumero.value = iniciativa.numero;
+
+                    resultadoItem.appendChild(inputNombre);
+                    resultadoItem.appendChild(inputNumero);
+
+                    listaIniciativas.appendChild(resultadoItem);
                 });
             }
         }
