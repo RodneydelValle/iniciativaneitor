@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Iniciativas de Rol 4</title>
+    <title>Iniciativas de Rol 5</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -100,8 +100,12 @@
         <button id="agregar-fila">Agregar Fila</button>
         <button id="quitar-fila">Quitar Fila</button>
         <button id="ordenar">Ordenar Iniciativas</button>
-        <button id="guardar">Guardar Iniciativas</button>
-        <button id="cargar">Cargar Iniciativas</button>
+        <button id="borrar-lista">Borrar Lista Guardada</button>
+
+        <h2>Iniciativas Ordenadas</h2>
+        <ul id="lista-iniciativas-ordenadas">
+            <!-- Lista de iniciativas ordenadas -->
+        </ul>
     </div>
     
     <script>
@@ -125,7 +129,7 @@
             }
         });
 
-        // Función para ordenar las iniciativas sin eliminar los campos input
+        // Función para ordenar las iniciativas y guardar en LocalStorage
         document.getElementById('ordenar').addEventListener('click', function() {
             const filas = Array.from(document.querySelectorAll('#tabla-iniciativas tr'));
             const iniciativas = [];
@@ -140,59 +144,47 @@
 
             iniciativas.sort((a, b) => b.numero - a.numero);
 
-            // Limpiar la tabla y volver a agregar las filas con inputs ordenadas
-            const cuerpoTabla = document.getElementById('tabla-iniciativas');
-            cuerpoTabla.innerHTML = '';
+            // Crear lista de iniciativas ordenadas y mostrarla en la lista aparte
+            const listaIniciativas = document.getElementById('lista-iniciativas-ordenadas');
+            listaIniciativas.innerHTML = ''; // Limpiar la lista
 
             iniciativas.forEach(iniciativa => {
-                const nuevaFila = document.createElement('tr');
-                nuevaFila.innerHTML = `
-                    <td><input type="text" class="nombre" value="${iniciativa.nombre}"></td>
-                    <td><input type="number" class="numero" value="${iniciativa.numero}"></td>
-                `;
-                cuerpoTabla.appendChild(nuevaFila);
-            });
-        });
-
-        // Función para guardar iniciativas en LocalStorage
-        document.getElementById('guardar').addEventListener('click', function() {
-            const filas = Array.from(document.querySelectorAll('#tabla-iniciativas tr'));
-            const iniciativas = [];
-
-            filas.forEach(fila => {
-                const nombre = fila.querySelector('.nombre').value;
-                const numero = parseInt(fila.querySelector('.numero').value);
-                if (nombre && !isNaN(numero)) {
-                    iniciativas.push({ nombre, numero });
-                }
+                const li = document.createElement('li');
+                li.textContent = `${iniciativa.nombre}: ${iniciativa.numero}`;
+                listaIniciativas.appendChild(li);
             });
 
-            // Guardar en LocalStorage
-            localStorage.setItem('iniciativas', JSON.stringify(iniciativas));
-            alert('Iniciativas guardadas.');
+            // Guardar la lista ordenada en LocalStorage
+            localStorage.setItem('listaIniciativasOrdenadas', JSON.stringify(iniciativas));
+            alert('Iniciativas ordenadas y guardadas.');
         });
 
-        // Función para cargar iniciativas desde LocalStorage
-        document.getElementById('cargar').addEventListener('click', function() {
-            const iniciativasGuardadas = JSON.parse(localStorage.getItem('iniciativas'));
+        // Función para cargar la lista de iniciativas ordenadas desde LocalStorage
+        function cargarListaGuardada() {
+            const iniciativasGuardadas = JSON.parse(localStorage.getItem('listaIniciativasOrdenadas'));
             if (iniciativasGuardadas) {
-                const cuerpoTabla = document.getElementById('tabla-iniciativas');
-                cuerpoTabla.innerHTML = ''; // Limpiar la tabla
+                const listaIniciativas = document.getElementById('lista-iniciativas-ordenadas');
+                listaIniciativas.innerHTML = ''; // Limpiar la lista
 
                 iniciativasGuardadas.forEach(iniciativa => {
-                    const nuevaFila = document.createElement('tr');
-                    nuevaFila.innerHTML = `
-                        <td><input type="text" class="nombre" value="${iniciativa.nombre}"></td>
-                        <td><input type="number" class="numero" value="${iniciativa.numero}"></td>
-                    `;
-                    cuerpoTabla.appendChild(nuevaFila);
+                    const li = document.createElement('li');
+                    li.textContent = `${iniciativa.nombre}: ${iniciativa.numero}`;
+                    listaIniciativas.appendChild(li);
                 });
-
-                alert('Iniciativas cargadas.');
-            } else {
-                alert('No hay iniciativas guardadas.');
             }
+        }
+
+        // Función para borrar la lista guardada en LocalStorage
+        document.getElementById('borrar-lista').addEventListener('click', function() {
+            localStorage.removeItem('listaIniciativasOrdenadas');
+            document.getElementById('lista-iniciativas-ordenadas').innerHTML = ''; // Limpiar la lista visible
+            alert('Lista de iniciativas guardada ha sido borrada.');
         });
+
+        // Cargar la lista guardada al cargar la página
+        window.onload = function() {
+            cargarListaGuardada();
+        };
     </script>
 </body>
 </html>
