@@ -1,0 +1,100 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    margin: 0;
+    padding: 20px;
+}
+
+.navbar {
+    background-color: #333;
+    overflow: hidden;
+}
+
+.navbar a {
+    float: left;
+    display: block;
+    color: white;
+    text-align: center;
+    padding: 14px 20px;
+    text-decoration: none;
+}
+
+.navbar a:hover {
+    background-color: #ddd;
+    color: black;
+}
+
+.container {
+    max-width: 600px;
+    margin: auto;
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+h1 {
+    text-align: center;
+}
+
+table {
+    width: 100%;
+    margin-top: 20px;
+}
+
+input {
+    width: calc(50% - 10px);
+    padding: 10px;
+    margin: 5px;
+}
+
+button {
+    padding: 10px 20px;
+    margin: 10px 0;
+    width: calc(50% - 10px);
+    float: left;
+}
+
+.button-row {
+    overflow: hidden;
+}
+
+th, td {
+    padding: 10px;
+    text-align: center;
+    border: 1px solid #ddd;
+}
+
+th {
+    background-color: #f0f0f0;
+}
+
+.resultado-casilla {
+    margin-top: 20px;
+}
+
+.casilla {
+    width: calc(33% - 10px); /* Ahora son 3 columnas */
+    margin: 5px;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    text-align: center;
+    display: inline-block;
+}
+
+.resultado-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center; /* Alineación vertical */
+    margin-bottom: 10px;
+}
+
+/* Estilo de la fila en rojo cuando está marcada */
+.fila-marcada {
+    background-color: #ffcccc;
+}
+
+.casilla-checkbox {
+    width: calc(33% - 10px); /* Tercer columna para la casilla de verificación */
+}
