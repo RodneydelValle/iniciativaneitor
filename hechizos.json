@@ -1,0 +1,62 @@
+[
+  {
+    "nombre": "Misil Mágico",
+    "nivel": 1,
+    "escuela": "Evocación",
+    "descripcion": "Crea tres dardos mágicos que golpean automáticamente."
+  },
+  {
+    "nombre": "Bola de Fuego",
+    "nivel": 3,
+    "escuela": "Evocación",
+    "descripcion": "Lanza una bola de fuego que causa 8d6 de daño en un área."
+  },
+  {
+    "nombre": "Manos Ardientes",
+    "nivel": 1,
+    "escuela": "Evocación",
+    "descripcion": "Un cono de fuego que inflige 3d6 de daño a los enemigos en la zona."
+  },
+  {
+    "nombre": "Manto de Sombras",
+    "nivel": 2,
+    "escuela": "Ilusión",
+    "descripcion": "Te envuelve en sombras, volviéndote invisible por 1 minuto."
+  },
+  {
+    "nombre": "Rayo de Escarcha",
+    "nivel": 0,
+    "escuela": "Evocación",
+    "descripcion": "Un rayo de frío que inflige 1d8 de daño y reduce la velocidad del objetivo."
+  },
+  {
+    "nombre": "Palabra Curativa",
+    "nivel": 1,
+    "escuela": "Conjuración",
+    "descripcion": "Cura 1d4 + tu modificador de hechicería."
+  },
+  {
+    "nombre": "Escudo",
+    "nivel": 1,
+    "escuela": "Abjuración",
+    "descripcion": "Aumenta tu CA en +5 hasta tu próximo turno."
+  },
+  {
+    "nombre": "Teletransporte",
+    "nivel": 7,
+    "escuela": "Conjuración",
+    "descripcion": "Te transporta instantáneamente a cualquier lugar conocido."
+  },
+  {
+    "nombre": "Deseo",
+    "nivel": 9,
+    "escuela": "Conjuración",
+    "descripcion": "Permite que cualquier deseo se vuelva realidad."
+  },
+  {
+    "nombre": "Detectar Magia",
+    "nivel": 1,
+    "escuela": "Adivinación",
+    "descripcion": "Detecta presencias mágicas en un radio de 30 pies."
+  }
+]
