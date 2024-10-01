@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Desbloqueo por Nivel</title>
+    <title>Desbloqueo por Nivel 2</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -26,11 +26,6 @@
             margin-bottom: 10px;
             flex-direction: column;
         }
-        .input-group input {
-            padding: 5px;
-            font-size: 1em;
-            width: 150px;
-        }
         .input-fields {
             display: flex;
             gap: 10px;
@@ -50,8 +45,8 @@
     <div class="list-section">
         <div class="section-title">Agregar Trucos</div>
         <div id="trick-container"></div>
-        <button onclick="addTrick()">Agregar Truco</button>
         <button onclick="loadTricks()">Cargar Trucos desde Base de Datos</button>
+        <button onclick="addTrick()">Agregar Truco</button>
     </div>
 
     <script type="module">
@@ -71,14 +66,25 @@
             if (error) {
                 console.error("Error al cargar trucos:", error);
             } else {
+                // Limpiar el contenedor y añadir los trucos
                 const trickContainer = document.getElementById('trick-container');
                 trickContainer.innerHTML = ''; // Limpiar el contenedor
+
+                // Crear el select para trucos
+                const trickSelect = document.createElement('select');
+                trickSelect.classList.add('trick-select');
+                trickSelect.innerHTML = '<option value="">Selecciona un truco</option>'; // Opción inicial
+
+                // Añadir opciones de trucos al select
                 data.forEach(trick => {
                     const option = document.createElement('option');
                     option.value = trick.name; // Aquí puedes elegir qué valor deseas almacenar
                     option.textContent = trick.name; // Lo que se mostrará en el menú desplegable
-                    trickContainer.appendChild(option);
+                    trickSelect.appendChild(option);
                 });
+
+                // Añadir el select al contenedor
+                trickContainer.appendChild(trickSelect);
             }
         }
 
