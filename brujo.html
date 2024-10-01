@@ -3,140 +3,33 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Desbloqueo por Nivel 2</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            padding: 20px;
-        }
-        .list-section {
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-        }
-        .section-title {
-            font-size: 1.3em;
-            font-weight: bold;
-            margin-bottom: 10px;
-        }
-        .input-group {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            margin-bottom: 10px;
-            flex-direction: column;
-        }
-        .input-fields {
-            display: flex;
-            gap: 10px;
-            width: 100%;
-        }
-        .description-btn {
-            padding: 5px 10px;
-            font-size: 1em;
-        }
-        .hidden {
-            display: none;
-        }
-    </style>
+    <title>Selecciona un Hechizo</title>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            fetch('hechizos.json')
+                .then(response => response.json())
+                .then(data => {
+                    const select = document.getElementById('hechizoSelect');
+                    const descripcion = document.getElementById('hechizoDescripcion');
+                    
+                    data.forEach(hechizo => {
+                        const option = document.createElement('option');
+                        option.value = hechizo.descripcion;
+                        option.textContent = hechizo.nombre;
+                        select.appendChild(option);
+                    });
+
+                    select.addEventListener('change', function() {
+                        descripcion.textContent = select.value;
+                    });
+                })
+                .catch(error => console.error('Error al cargar los hechizos:', error));
+        });
+    </script>
 </head>
 <body>
-
-    <div class="list-section">
-        <div class="section-title">Agregar Trucos</div>
-        <div id="trick-container"></div>
-        <button onclick="loadTricks()">Cargar Trucos desde Base de Datos</button>
-        <button onclick="addTrick()">Agregar Truco</button>
-    </div>
-
-    <script type="module">
-        import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm';
-
-        // Configuración de Supabase
-        const supabaseUrl = 'https://jabzwgivqxamcnncmdpj.supabase.co'; // Tu URL de proyecto aquí
-        const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImphYnp3Z2l2cXhhbWNubmNtZHBqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Mjc3OTU2MTYsImV4cCI6MjA0MzM3MTYxNn0.bCP4s-JYQvM7-dg_0S6gxoRsxD1dzYjBUysuXluXi9A'; // Tu anon key aquí
-        const supabase = createClient(supabaseUrl, supabaseKey);
-
-        // Función para cargar trucos desde la base de datos
-        async function loadTricks() {
-            const { data, error } = await supabase
-                .from('trucos')
-                .select('*');
-
-            if (error) {
-                console.error("Error al cargar trucos:", error);
-            } else {
-                // Limpiar el contenedor y añadir los trucos
-                const trickContainer = document.getElementById('trick-container');
-                trickContainer.innerHTML = ''; // Limpiar el contenedor
-
-                // Crear el select para trucos
-                const trickSelect = document.createElement('select');
-                trickSelect.classList.add('trick-select');
-                trickSelect.innerHTML = '<option value="">Selecciona un truco</option>'; // Opción inicial
-
-                // Añadir opciones de trucos al select
-                data.forEach(trick => {
-                    const option = document.createElement('option');
-                    option.value = trick.name; // Aquí puedes elegir qué valor deseas almacenar
-                    option.textContent = trick.name; // Lo que se mostrará en el menú desplegable
-                    trickSelect.appendChild(option);
-                });
-
-                // Añadir el select al contenedor
-                trickContainer.appendChild(trickSelect);
-            }
-        }
-
-        // Función para agregar un truco en la interfaz
-        function addTrick() {
-            const trickContainer = document.getElementById('trick-container');
-            const trickElement = document.createElement('div');
-            trickElement.classList.add('input-group');
-
-            trickElement.innerHTML = `
-                <div class="input-fields">
-                    <select class="trick-select">
-                        <option value="">Selecciona un truco</option>
-                    </select>
-                    <input type="text" placeholder="Información adicional" class="trick-info">
-                    <button class="description-btn" onclick="toggleDescription(this)">Descripción</button>
-                </div>
-                <div class="hidden description">
-                    <textarea placeholder="Escribe la descripción aquí..." class="trick-description" style="width: 100%; height: 50px;"></textarea>
-                </div>
-                <button class="save-btn" onclick="saveTrick(this)">Guardar Truco</button>
-            `;
-
-            trickContainer.appendChild(trickElement);
-        }
-
-        // Función para desplegar/ocultar la descripción
-        function toggleDescription(button) {
-            const description = button.parentElement.nextElementSibling;
-            description.classList.toggle('hidden');
-        }
-
-        // Función para guardar el truco en Supabase cuando se presiona el botón de guardar
-        async function saveTrick(button) {
-            const trickElement = button.parentElement;
-            const selectedTrick = trickElement.querySelector('.trick-select').value;
-            const info = trickElement.querySelector('.trick-info').value;
-            const description = trickElement.querySelector('.trick-description').value;
-
-            const { data, error } = await supabase
-                .from('trucos')
-                .insert([{ name: selectedTrick, info, description }]);
-
-            if (error) {
-                console.error("Error al insertar truco en Supabase:", error);
-                alert("Error al guardar el truco. Por favor, intenta de nuevo.");
-            } else {
-                console.log("Truco insertado correctamente:", data);
-                alert("Truco guardado: " + selectedTrick);
-            }
-        }
-    </script>
-    
-</body>
-</html>
+    <h1>Selecciona un Hechizo de D&D 5e</h1>
+    <label for="hechizoSelect">Hechizo:</label>
+    <select id="hechizoSelect">
+        <option value="">--Selecciona un hechizo--</option>
+    </select>
