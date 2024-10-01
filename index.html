@@ -100,6 +100,8 @@
         <button id="agregar-fila">Agregar Fila</button>
         <button id="quitar-fila">Quitar Fila</button>
         <button id="ordenar">Ordenar Iniciativas</button>
+        <button id="guardar">Guardar Iniciativas</button>
+        <button id="cargar">Cargar Iniciativas</button>
     </div>
     
     <script>
@@ -150,6 +152,46 @@
                 `;
                 cuerpoTabla.appendChild(nuevaFila);
             });
+        });
+
+        // Función para guardar iniciativas en LocalStorage
+        document.getElementById('guardar').addEventListener('click', function() {
+            const filas = Array.from(document.querySelectorAll('#tabla-iniciativas tr'));
+            const iniciativas = [];
+
+            filas.forEach(fila => {
+                const nombre = fila.querySelector('.nombre').value;
+                const numero = parseInt(fila.querySelector('.numero').value);
+                if (nombre && !isNaN(numero)) {
+                    iniciativas.push({ nombre, numero });
+                }
+            });
+
+            // Guardar en LocalStorage
+            localStorage.setItem('iniciativas', JSON.stringify(iniciativas));
+            alert('Iniciativas guardadas.');
+        });
+
+        // Función para cargar iniciativas desde LocalStorage
+        document.getElementById('cargar').addEventListener('click', function() {
+            const iniciativasGuardadas = JSON.parse(localStorage.getItem('iniciativas'));
+            if (iniciativasGuardadas) {
+                const cuerpoTabla = document.getElementById('tabla-iniciativas');
+                cuerpoTabla.innerHTML = ''; // Limpiar la tabla
+
+                iniciativasGuardadas.forEach(iniciativa => {
+                    const nuevaFila = document.createElement('tr');
+                    nuevaFila.innerHTML = `
+                        <td><input type="text" class="nombre" value="${iniciativa.nombre}"></td>
+                        <td><input type="number" class="numero" value="${iniciativa.numero}"></td>
+                    `;
+                    cuerpoTabla.appendChild(nuevaFila);
+                });
+
+                alert('Iniciativas cargadas.');
+            } else {
+                alert('No hay iniciativas guardadas.');
+            }
         });
     </script>
 </body>
