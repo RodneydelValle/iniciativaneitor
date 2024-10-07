@@ -37,64 +37,61 @@ h1 {
     text-align: center;
 }
 
-table {
-    width: 100%;
-    margin-top: 20px;
+.inputs {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
 }
 
-input {
-    width: calc(50% - 10px);
+select, input, button {
+    font-size: 20px;
     padding: 10px;
     margin: 5px;
+    width: calc(50% - 12px);
+    font-family: 'Anton', sans-serif;
+    letter-spacing: 3px;
+}
+
+.btn-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 button {
     padding: 10px 20px;
     margin: 10px 0;
-    width: calc(50% - 10px);
-    float: left;
+    width: 100%;
+    box-sizing: border-box;
 }
 
-.button-row {
-    overflow: hidden;
-}
-
-th, td {
-    padding: 10px;
-    text-align: center;
-    border: 1px solid #ddd;
-}
-
-th {
-    background-color: #f0f0f0;
-}
-
-.resultado-casilla {
+.resultados {
     margin-top: 20px;
 }
 
-.casilla {
-    width: calc(33% - 10px); /* Ahora son 3 columnas */
-    margin: 5px;
-    padding: 10px;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    text-align: center;
-    display: inline-block;
-}
-
 .resultado-item {
-    display: flex;
-    justify-content: space-between;
-    align-items: center; /* Alineación vertical */
     margin-bottom: 10px;
 }
 
-/* Estilo de la fila en rojo cuando está marcada */
-.fila-marcada {
-    background-color: #ffcccc;
+.gifdados {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
 }
 
-.casilla-checkbox {
-    width: calc(33% - 10px); /* Tercer columna para la casilla de verificación */
+.sdado {
+    width: 200px;
+}
+
+.dado-item {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+}
+
+/* Para limpiar flotantes si es necesario */
+.clearfix::after {
+    content: "";
+    display: table;
+    clear: both;
 }
