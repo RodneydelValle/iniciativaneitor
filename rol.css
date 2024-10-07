@@ -31,6 +31,7 @@ body {
     padding: 20px;
     border-radius: 8px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    justify-content: center;
 }
 
 h1 {
@@ -89,9 +90,3 @@ button {
     margin-bottom: 10px;
 }
 
-/* Para limpiar flotantes si es necesario */
-.clearfix::after {
-    content: "";
-    display: table;
-    clear: both;
-}
