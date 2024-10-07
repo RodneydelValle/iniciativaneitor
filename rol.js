@@ -140,3 +140,44 @@ document.getElementById('borrar-lista').addEventListener('click', function() {
 window.onload = function() {
     cargarListaGuardada();
 };
+
+document.getElementById('ordenar').addEventListener('click', function() {
+    const iniciativas = [];
+    const rows = document.querySelectorAll('#tabla-iniciativas tr');
+
+    rows.forEach(row => {
+        const nombre = row.querySelector('.nombre').value;
+        const numero = row.querySelector('.numero').value;
+        if (nombre && numero) {
+            iniciativas.push({ nombre, numero: parseInt(numero) });
+        }
+    });
+
+    // Ordenar las iniciativas
+    iniciativas.sort((a, b) => b.numero - a.numero);
+
+    // Limpiar el contenedor de iniciativas ordenadas
+    const listaIniciativasOrdenadas = document.getElementById('lista-iniciativas-ordenadas');
+    listaIniciativasOrdenadas.innerHTML = '';
+
+    // Mostrar iniciativas ordenadas en casillas separadas
+    iniciativas.forEach(ini => {
+        const div = document.createElement('div');
+        div.classList.add('iniciativa');
+
+        // Crear casillas separadas para el nombre y el número de iniciativa
+        const nombreDiv = document.createElement('div');
+        nombreDiv.classList.add('nombre-casilla');
+        nombreDiv.innerText = ini.nombre; // Solo el nombre
+
+        const numeroDiv = document.createElement('div');
+        numeroDiv.classList.add('numero-casilla');
+        numeroDiv.innerText = `: ${ini.numero}`; // Solo ":" seguido del número
+
+        // Agregar las casillas al contenedor
+        div.appendChild(nombreDiv);
+        div.appendChild(numeroDiv);
+        listaIniciativasOrdenadas.appendChild(div);
+    });
+});
+
